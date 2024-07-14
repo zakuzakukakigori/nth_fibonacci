@@ -1,5 +1,18 @@
 mod fibonacci;
 
+use clap::Parser;
+use fibonacci::calculate;
+
+#[derive(Parser)]
+/// Calculate fibonacci number with 64-bit wrapping
+struct Args {
+    #[arg(short)]
+    /// n-th fibonacci
+    n: usize,
+}
+
 fn main() {
-    println!("Hello, world!");
+    let args: Args = Args::parse();
+
+    println!("{}", calculate(args.n));
 }
