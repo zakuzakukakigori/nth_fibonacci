@@ -6,7 +6,7 @@ pub fn calculate(n: usize) -> u64 {
     let mut a: u64 = 0;
     let mut b: u64 = 1;
 
-    for single_step in single_steps(n) {
+    for single_step in single_steps(n-1) {
         (a, b) = (
             a.wrapping_mul(b.wrapping_mul(2).wrapping_sub(a)),
             b.wrapping_pow(2).wrapping_add(a.wrapping_pow(2)),
@@ -16,7 +16,7 @@ pub fn calculate(n: usize) -> u64 {
             (a, b) = (b, a.wrapping_add(b));
         }
     }
-    a
+    b
 }
 
 fn single_steps(n: usize) -> impl Iterator<Item = bool> {
