@@ -1,13 +1,32 @@
 pub fn calculate(n: usize) -> u64 {
-    if n == 0 { return 0 }
-    
+    if n == 0 {
+        return 0;
+    }
+
     let mut a: u64 = 0;
     let mut b: u64 = 1;
 
-    for _ in 1..n {
-        (a, b) = (b, a.wrapping_add(b));
+    for single_step in single_steps(n) {
+        (a, b) = (
+            a.wrapping_mul(b.wrapping_mul(2).wrapping_sub(a)),
+            b.wrapping_pow(2).wrapping_add(a.wrapping_pow(2)),
+        );
+
+        if single_step {
+            (a, b) = (b, a.wrapping_add(b));
+        }
     }
-    b
+    a
+}
+
+fn single_steps(n: usize) -> impl Iterator<Item = bool> {
+    let left_bound = usize::BITS - n.leading_zeros();
+
+    (0..left_bound).rev().map(move |i| {
+        let mask = 1_usize << i;
+
+        (n & mask) != 0
+    })
 }
 
 #[cfg(test)]
